@@ -5,7 +5,7 @@ const {Contact} = require("../models/contact");
 const { HttpError } = require("../helpers/HttpError");
 
 const getAllContacts = async (req, res) => {
-  const result = await Contact.find({}, "-createdAt -updatedAt");
+  const result = await Contact.find({}, {versionKey: false, timestamps: false});
   res.status(200).json(result);
 };
 
