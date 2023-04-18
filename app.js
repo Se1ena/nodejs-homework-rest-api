@@ -22,7 +22,7 @@ app.use((req, res) => {
   res.status(404).json({ message: 'This route does not exist, please check the documentation.' })
 })
 
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   const { status = 500, message = "Server error"} = err;
   res.status(status).json({ message })
 })
