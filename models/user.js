@@ -2,9 +2,12 @@ const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 const { handleMongooseError } = require("../utils");
 
-const {schemas} = require("../utils/validation/userValidationSchemas")
+const { schemas } = require("../utils/validation/userValidationSchemas");
 
-const {emailRegexp, subscriptionList} = require("../utils/validation/userValidationSchemas");
+const {
+  emailRegexp,
+  subscriptionList,
+} = require("../utils/validation/userValidationSchemas");
 
 const userSchema = new Schema(
   {
@@ -27,6 +30,10 @@ const userSchema = new Schema(
     token: {
       type: String,
       default: "",
+    },
+    avatarURL: {
+      type: String,
+      required: true,
     },
   },
   {
