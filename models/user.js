@@ -2,8 +2,12 @@ const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 const { handleMongooseError } = require("../utils");
 
-const emailRegexp = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-const subscriptionList = ["starter", "pro", "business"];
+const { schemas } = require("../utils/validation/userValidationSchemas");
+
+const {
+  emailRegexp,
+  subscriptionList,
+} = require("../utils/validation/userValidationSchemas");
 
 const userSchema = new Schema(
   {
@@ -14,7 +18,6 @@ const userSchema = new Schema(
     },
     email: {
       type: String,
-      match: emailRegexp,
       unique: true,
       required: [true, "Email is required"],
     },
@@ -27,6 +30,10 @@ const userSchema = new Schema(
       type: String,
       default: "",
     },
+    avatarURL: {
+      type: String,
+      required: true,
+    },
   },
   {
     versionKey: false,
@@ -35,23 +42,6 @@ const userSchema = new Schema(
 );
 
 userSchema.post("save", handleMongooseError);
-
-const registerSchema = Joi.object({
-  password: Joi.string().min(6).required(),
-  email: Joi.string().pattern(emailRegexp).required(),
-  subscription: Joi.string().valid(...subscriptionList),
-  token: Joi.string(),
-});
-
-const loginSchema = Joi.object({
-  email: Joi.string().pattern(emailRegexp).required(),
-  password: Joi.string().min(6).required(),
-});
-
-const schemas = {
-  registerSchema,
-  loginSchema,
-};
 
 const User = model("user", userSchema);
 
